@@ -49,6 +49,7 @@ def get_all_concerts():
 def format_concerts(my_concert_artists):
     """Create the string for output to the web """      
     artists_string = ''
+    print("EWartists",ew_artists)
     for artist in my_concert_artists:
         m = re.search('(?:[^,]*,){0,4}[^,]*',ew_artists[artist])
         if m:
