@@ -68,6 +68,7 @@ def get_rdio_ewconcerts(username):
     # Just want concerts from Rdio artists     
     my_concert_artists = artists.intersection(ew_artists) 
     # String it up
+    print(my_concert_artists)
     return format_concerts(my_concert_artists)
 
 # Call the get_rdio_ewconcerts function based on the URL
