@@ -44,6 +44,7 @@ def get_all_concerts():
         current_artists = artist_concert_info[0].split(',')
         for artist in current_artists:
             ew_artists[artist] = ''.join(artist_concert_info[1:])
+    return ew_artists
             
 def format_concerts(my_concert_artists):
     """Create the string for output to the web """      
@@ -62,24 +63,17 @@ def format_concerts(my_concert_artists):
 def get_rdio_ewconcerts(username):
     """Find all EW-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
-    print("1")
     artists = get_rdio_artists(username)
-    print("2")
     ew_artists = get_all_concerts()
     # Just want concerts from Rdio artists     
-    print("3")
-    print(artists)
-    print(ew_artists)
     my_concert_artists = artists.intersection(ew_artists) 
     # String it up
-    print("4")
     return format_concerts(my_concert_artists)
 
 # Call the get_rdio_ewconcerts function based on the URL
 app = Flask(__name__)
 @app.route('/<username>')
 def get_username(username):
-    print("believe me, i got here.")
     return get_rdio_ewconcerts(username)
 @app.route('/')
 def hello():
