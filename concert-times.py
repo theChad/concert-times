@@ -67,6 +67,7 @@ def get_rdio_ewconcerts(username):
     # Pick up the Rdio artists and all the EW concerts
     artists = get_rdio_artists(username)
     ew_artists = get_all_concerts()
+    print("First EW, ", ew_artists)
     # Just want concerts from Rdio artists     
     my_concert_artists = artists.intersection(ew_artists) 
     # String it up
