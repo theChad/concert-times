@@ -4,7 +4,8 @@ from rauth import OAuth1Service
 import urllib.parse, requests
 import re
 
-def get_rdio_ewconcerts(username):
+def get_rdio_artists(username):
+    """Get all the artists in username's Rdio collection"""
     # Create Rdio OAuth object 
     rdio = OAuth1Service(
         name='Rdio',
@@ -26,7 +27,10 @@ def get_rdio_ewconcerts(username):
     artists_result = session.post('', data = params)
     if artists_result.json()['status'] == 'ok':
         artists = {x['name'] for x in artists_result.json()['result']}
-    
+    return artists
+
+def get_all_concerts():
+    """Return a dictionary of all concerts on the Early Warnings page, indexed by artist."""
     #Parse Early Warning concerts
     chicagoReader = requests.get('http://www.chicagoreader.com/chicago/EarlyWarnings')
     reader_html = chicagoReader.text
@@ -41,9 +45,8 @@ def get_rdio_ewconcerts(username):
         for artist in current_artists:
             ew_artists[artist] = ''.join(artist_concert_info[1:])
             
-         
-    my_concert_artists = artists.intersection(ew_artists) 
-    #Create the string for output to the web       
+def format_concerts(my_concert_artists):
+    """Create the string for output to the web """      
     artists_string = ''
     for artist in my_concert_artists:
         m = re.search('(?:[^,]*,){0,4}[^,]*',ew_artists[artist])
@@ -53,12 +56,24 @@ def get_rdio_ewconcerts(username):
             concert_string = ew_artists[artist]
         artists_string += artist + ': ' + concert_string + '<br>'
     return artists_string
-    
+       
+
+
+def get_rdio_ewconcerts(username):
+    """Find all EW-listed concerts by username's Rdio collection artists."""
+    # Pick up the Rdio artists and all the EW concerts
+    artists = get_rdio_artists(username)
+    ew_artists = get_all_concerts()
+    # Just want concerts from Rdio artists     
+    my_concert_artists = artists.intersection(ew_artists) 
+    # String it up
+    return format_concerts(my_concert_artists)
 
 # Call the get_rdio_ewconcerts function based on the URL
 app = Flask(__name__)
 @app.route('/<username>')
 def get_username(username):
+    print("believe me, i got here.")
     return get_rdio_ewconcerts(username)
 @app.route('/')
 def hello():
