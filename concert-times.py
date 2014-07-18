@@ -35,7 +35,8 @@ def get_all_concerts():
     chicagoReader = requests.get('http://www.chicagoreader.com/chicago/EarlyWarnings')
     reader_html = chicagoReader.text
     ew_artists_spots = [m.start() for m in re.finditer('<li class="l0 event">', reader_html)]
-    ew_artists_spots.append(len(reader_html))
+    ew_artists_spots.append(ew_artists_spots[1]-ew_artists_spots[0]+\
+                            ew_artists_spots[len(ew_artists_spots)])
     ew_artists = {}
     
     for i in range(len(ew_artists_spots)-1):
@@ -67,6 +68,7 @@ def get_rdio_ewconcerts(username):
     # Pick up the Rdio artists and all the EW concerts
     artists = get_rdio_artists(username)
     ew_artists = get_all_concerts()
+    print("First EWWWWWWWWW")
     print("First EW, ", ew_artists)
     # Just want concerts from Rdio artists     
     my_concert_artists = artists.intersection(ew_artists) 
