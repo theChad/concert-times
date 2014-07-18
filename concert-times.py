@@ -67,12 +67,15 @@ def format_concerts(my_concert_artists):
 def get_rdio_ewconcerts(username):
     """Find all EW-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
+    print("1")
     artists = get_rdio_artists(username)
+    print("2")
     ew_artists = get_all_concerts()
-    print("First EWWWWWWWWW")
+    print("3")
     #print("First EW, ", ew_artists)
     # Just want concerts from Rdio artists     
     my_concert_artists = artists.intersection(ew_artists) 
+    print("4")
     # String it up
     print(my_concert_artists)
     return format_concerts(my_concert_artists)
