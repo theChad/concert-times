@@ -56,8 +56,10 @@ def format_concerts(my_concert_artists):
         m = re.search('(?:[^,]*,){0,4}[^,]*',ew_artists[artist])
         if m:
             concert_string = m.group(0)
+            print(concert_string)
         else:
             concert_string = ew_artists[artist]
+            print(concert_string)
         artists_string += artist + ': ' + concert_string + '<br>'
     print("almost home")
     return artists_string
