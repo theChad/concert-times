@@ -81,6 +81,7 @@ def get_rdio_ewconcerts(username):
 app = Flask(__name__)
 @app.route('/<username>')
 def get_username(username):
+    print("What is happening.")
     return get_rdio_ewconcerts(username)
 @app.route('/')
 def hello():
