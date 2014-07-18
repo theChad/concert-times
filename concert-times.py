@@ -47,11 +47,11 @@ def get_all_concerts():
             ew_artists[artist] = ''.join(artist_concert_info[1:])
     return ew_artists
             
-def format_concerts(my_concert_artists):
+def format_concerts(my_concert_artists,ew_artists):
     """Create the string for output to the web """      
     artists_string = ''
     print("hmmm")
-    #print("EWartists",ew_artists)
+    print("EWartists",ew_artists)
     i=100
     for artist in my_concert_artists:
         m = re.search('(?:[^,]*,){0,4}[^,]*',ew_artists[artist])
@@ -83,7 +83,7 @@ def get_rdio_ewconcerts(username):
     print("4")
     # String it up
     print(my_concert_artists)
-    return format_concerts(my_concert_artists)
+    return format_concerts(my_concert_artists,ew_artists)
 
 # Call the get_rdio_ewconcerts function based on the URL
 app = Flask(__name__)
