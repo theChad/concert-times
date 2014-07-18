@@ -51,7 +51,7 @@ def format_concerts(my_concert_artists):
     """Create the string for output to the web """      
     artists_string = ''
     print("hmmm")
-    print("EWartists",ew_artists)
+    #print("EWartists",ew_artists)
     for artist in my_concert_artists:
         m = re.search('(?:[^,]*,){0,4}[^,]*',ew_artists[artist])
         if m:
@@ -59,6 +59,7 @@ def format_concerts(my_concert_artists):
         else:
             concert_string = ew_artists[artist]
         artists_string += artist + ': ' + concert_string + '<br>'
+    print("almost home")
     return artists_string
        
 
@@ -69,7 +70,7 @@ def get_rdio_ewconcerts(username):
     artists = get_rdio_artists(username)
     ew_artists = get_all_concerts()
     print("First EWWWWWWWWW")
-    print("First EW, ", ew_artists)
+    #print("First EW, ", ew_artists)
     # Just want concerts from Rdio artists     
     my_concert_artists = artists.intersection(ew_artists) 
     # String it up
