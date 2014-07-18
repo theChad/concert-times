@@ -50,13 +50,8 @@ def get_all_concerts():
 def format_concerts(my_concert_artists,ew_artists):
     """Create the string for output to the web """      
     artists_string = ''
-    print("hmmm")
-    print("EWartists",ew_artists)
-    i=100
     for artist in my_concert_artists:
         m = re.search('(?:[^,]*,){0,4}[^,]*',ew_artists[artist])
-        print(i)
-        i+=1
         if m:
             concert_string = m.group(0)
             print(concert_string)
@@ -64,7 +59,6 @@ def format_concerts(my_concert_artists,ew_artists):
             concert_string = ew_artists[artist]
             print(concert_string)
         artists_string += artist + ': ' + concert_string + '<br>'
-    print("almost home")
     return artists_string
        
 
@@ -72,17 +66,12 @@ def format_concerts(my_concert_artists,ew_artists):
 def get_rdio_ewconcerts(username):
     """Find all EW-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
-    print("1")
-    artists = get_rdio_artists(username)
-    print("2")
+    artists = get_rdio_artists()
     ew_artists = get_all_concerts()
-    print("3")
     #print("First EW, ", ew_artists)
     # Just want concerts from Rdio artists     
     my_concert_artists = artists.intersection(ew_artists) 
-    print("4")
     # String it up
-    print(my_concert_artists)
     return format_concerts(my_concert_artists,ew_artists)
 
 # Call the get_rdio_ewconcerts function based on the URL
