@@ -26,7 +26,8 @@ if __name__ == '__main__':
     #    print(concerts['artist'],concerts['venue'],concerts['date'])
     #print(format_concerts(my_concerts_list))
     print('I shouldn\'t be running')
-    """Find all EW-listed concerts by username's Rdio collection artists."""
+    print(get_rdio_ewconcerts('the_chad'))
+    """
     # Pick up the Rdio artists and all the EW concerts
     artists = {'Dessa','Arctic Monkey','Nine Inch Nails','Justin Timberlake'}
     ew_artists = get_all_concerts()
@@ -37,4 +38,4 @@ if __name__ == '__main__':
     my_concerts_dict = org_concert_info(my_concerts)
     my_concerts_list = concerts_by_date(my_concerts_dict)
     # String it up
-    print(format_concerts(my_concerts_list))
+    print(format_concerts(my_concerts_list))"""

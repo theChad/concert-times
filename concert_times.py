@@ -114,7 +114,7 @@ def get_rdio_ewconcerts(username):
     """Find all EW-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
     print('1')
-    artists = get_rdio_artists()
+    artists = get_rdio_artists(username)
     print('1a')
     ew_artists = get_all_concerts()
     # Just want concerts from Rdio artists    
