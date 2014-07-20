@@ -11,7 +11,6 @@ import urllib.parse, requests
 
 def get_rdio_artists(username):
     """Get all the artists in username's Rdio collection"""
-    print('Do i at least get here?')
     # Create Rdio OAuth object 
     rdio = OAuth1Service(
         name='Rdio',
@@ -21,7 +20,6 @@ def get_rdio_artists(username):
         access_token_url='http://api.rdio.com/oauth/access_token',
         authorize_url='https://api.twitter.com/oauth/authorize',
         base_url='http://api.rdio.com/1/')
-    print('I didn\'t change this.')
     #Open a signed, unathorized Rdio session
     session = rdio.get_session()
     #Get the Rdio user key
@@ -29,7 +27,6 @@ def get_rdio_artists(username):
     findUser_result = session.post('',data = params)
     userKey = findUser_result.json()['result']['key']
     #Collect all Rdio artists
-    print('or this.')
     params = urllib.parse.urlencode({'method': 'getArtistsInCollection', 'user': userKey})
     artists_result = session.post('', data = params)
     if artists_result.json()['status'] == 'ok':
@@ -102,9 +99,13 @@ def concerts_by_date(concerts_info):
 def format_concerts(my_concerts):
     """Create the string for output to the web """      
     concerts_string = ''
+    index_month=date.today().month-1
     for concert in my_concerts:
-        concerts_string += concert['artist'] + '<br>' + '&nbsp&nbsp&nbsp&nbsp&nbsp' + \
-        concert['venue'] + 'at ' + concert['time'] + ', ' + concert['date'] + '<br>'
+        if concert['pydate'].month > index_month:
+            index_month = concert['pydate'].month
+            concerts_string += '<h2>' + concert['pydate'].strftime("%B") + '</h2><br>'
+        concerts_string += '<strong>' + concert['artist'] + '</strong>' + '&nbsp&nbsp' + \
+        concert['venue'] + ', ' + concert['time'] + ', ' + concert['date'] + '<br>'
     
     return concerts_string
        
@@ -113,19 +114,14 @@ def format_concerts(my_concerts):
 def get_rdio_ewconcerts(username):
     """Find all EW-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
-    print('1')
     artists = get_rdio_artists(username)
-    print('1a')
     ew_artists = get_all_concerts()
-    # Just want concerts from Rdio artists    
-    print('2') 
+    # Just want concerts from Rdio artists   
     my_concert_artists = artists.intersection(ew_artists) 
     my_concerts={artist:ew_artists[artist] for artist in my_concert_artists}
     # Reorganize my_concerts so I can pick out the dates
-    print('4')
     my_concerts_dict = org_concert_info(my_concerts)
     my_concerts_list = concerts_by_date(my_concerts_dict)
     # String it up
-    print('5')
     return format_concerts(my_concerts_list)
 
