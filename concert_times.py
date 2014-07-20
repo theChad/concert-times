@@ -111,14 +111,18 @@ def format_concerts(my_concerts):
 def get_rdio_ewconcerts(username):
     """Find all EW-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
+    print('1')
     artists = get_rdio_artists()
     ew_artists = get_all_concerts()
-    # Just want concerts from Rdio artists     
+    # Just want concerts from Rdio artists    
+    print('2') 
     my_concert_artists = artists.intersection(ew_artists) 
     my_concerts={artist:ew_artists[artist] for artist in my_concert_artists}
     # Reorganize my_concerts so I can pick out the dates
+    print('4')
     my_concerts_dict = org_concert_info(my_concerts)
     my_concerts_list = concerts_by_date(my_concerts_dict)
     # String it up
+    print('5')
     return format_concerts(my_concerts_list)
 
