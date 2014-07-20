@@ -11,6 +11,7 @@ import urllib.parse, requests
 
 def get_rdio_artists(username):
     """Get all the artists in username's Rdio collection"""
+    print('Do i at least get here?')
     # Create Rdio OAuth object 
     rdio = OAuth1Service(
         name='Rdio',
