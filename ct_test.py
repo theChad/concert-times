@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # String it up
     #return format_concerts(my_concerts)
     my_concerts_list=concerts_by_date(my_concerts_dict)
-    for concerts in my_concerts_list:
-        print(concerts['artist'],concerts['venue'],concerts['date'])
-    print(format_concerts(my_concerts_list))
-
+    #for concerts in my_concerts_list:
+    #    print(concerts['artist'],concerts['venue'],concerts['date'])
+    #print(format_concerts(my_concerts_list))
+    print('I shouldn\'t be running')
