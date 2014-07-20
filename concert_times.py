@@ -20,7 +20,7 @@ def get_rdio_artists(username):
         access_token_url='http://api.rdio.com/oauth/access_token',
         authorize_url='https://api.twitter.com/oauth/authorize',
         base_url='http://api.rdio.com/1/')
-    
+    print('I didn\'t change this.')
     #Open a signed, unathorized Rdio session
     session = rdio.get_session()
     #Get the Rdio user key
@@ -28,6 +28,7 @@ def get_rdio_artists(username):
     findUser_result = session.post('',data = params)
     userKey = findUser_result.json()['result']['key']
     #Collect all Rdio artists
+    print('or this.')
     params = urllib.parse.urlencode({'method': 'getArtistsInCollection', 'user': userKey})
     artists_result = session.post('', data = params)
     if artists_result.json()['status'] == 'ok':
@@ -113,6 +114,7 @@ def get_rdio_ewconcerts(username):
     # Pick up the Rdio artists and all the EW concerts
     print('1')
     artists = get_rdio_artists()
+    print('1a')
     ew_artists = get_all_concerts()
     # Just want concerts from Rdio artists    
     print('2') 
