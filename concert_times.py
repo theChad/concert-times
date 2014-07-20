@@ -98,12 +98,12 @@ def concerts_by_date(concerts_info):
             
 def format_concerts(my_concerts):
     """Create the string for output to the web """      
-    concerts_string = '<!DOCTYPE HTML><html>'
+    concerts_string = '<!DOCTYPE HTML><html><body>'
     index_month=date.today().month-1
     for concert in my_concerts:
         if concert['pydate'].month > index_month:
             index_month = concert['pydate'].month
-            concerts_string += '<h2>' + concert['pydate'].strftime("%B") + '</h2><br>'
+            concerts_string += '<h2>' + concert['pydate'].strftime("%B") + '</h2>'
         concerts_string += '<strong>' + concert['artist'] + '</strong>' + '&nbsp&nbsp' + \
         concert['venue'] + ', ' + concert['time'] + ', ' + concert['date'] + '<br>'
     concerts_string+='</body></html>'
