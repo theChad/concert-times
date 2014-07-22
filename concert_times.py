@@ -44,7 +44,6 @@ def get_all_concerts():
     # Find the last event's end
     m_last=re.search('</li>',reader_html[ew_artists_spots[-1]:])
     ew_artists_spots.append(m_last.start()+ew_artists_spots[-1])
-    print(ew_artists_spots)
     ew_artists = {}
     # loop through each concert. Is this the fastest way to do this?
     for i in range(len(ew_artists_spots)-1):
@@ -99,7 +98,8 @@ def concerts_by_date(concerts_info):
             
 def format_concerts(my_concerts):
     """Create the string for output to the web """      
-    concerts_string = '<!DOCTYPE HTML><html><body>'
+    concerts_string = '<!DOCTYPE HTML><html><head><style> body {background-color:#c6e4ff} ' +\
+    '</style></head><body>'
     index_month=date.today().month-1
     for concert in my_concerts:
         if concert['pydate'].month > index_month:
