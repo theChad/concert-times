@@ -35,15 +35,16 @@ def get_rdio_artists(username):
 
 def get_all_concerts():
     """Return a dictionary of all concerts on the Early Warnings page, indexed by artist.
-    Each artist's entry is a list of their upcoming shows (most of length 1)."""
+    Each artist's entry is a list of their upcoming shows in text (most of length 1)."""
     #Parse Early Warning concerts
     chicagoReader = requests.get('http://www.chicagoreader.com/chicago/EarlyWarnings')
     reader_html = chicagoReader.text
     # Each concert element starts with the same html list element
-    ew_artists_spots = [m.start() for m in re.finditer('<li class="l0 event">', reader_html)]
-    # Assume the last event will be about as much space as the first
-    ew_artists_spots.append(ew_artists_spots[1]-ew_artists_spots[0]+\
-                            ew_artists_spots[len(ew_artists_spots)-1])
+    ew_artists_spots = [m.start() for m in re.finditer('<li class="l0 event', reader_html)]
+    # Find the last event's end
+    m_last=re.search('</li>',reader_html[ew_artists_spots[-1]:])
+    ew_artists_spots.append(m_last.start()+ew_artists_spots[-1])
+    print(ew_artists_spots)
     ew_artists = {}
     # loop through each concert. Is this the fastest way to do this?
     for i in range(len(ew_artists_spots)-1):
