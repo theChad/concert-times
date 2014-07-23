@@ -6,8 +6,49 @@ Essential functions for getting upcoming concerts by Rdio artists.
 import os, re
 from operator import itemgetter
 from datetime import date
+from datetime import datetime
 from rauth import OAuth1Service
 import urllib.parse, requests
+
+
+def get_lastfm_concerts(city):
+    api_key=os.environ['LASTFM_KEY']
+    # Parameters to pass to the Last.fm API. We'll be calling the geo.getevents method and
+    # using a limit of 1000 to try to ensure all the concerts show up. By default it gets
+    # 'nearby' concerts, but I can change that later to specify the exact distance.
+    params=urllib.parse.urlencode({'location': city, 'api_key': api_key, 
+                                   'format': 'json','method': 'geo.getevents',
+                                   'limit':1000})
+    getevents_request=requests.get("http://ws.audioscrobbler.com/2.0/",params=params)
+    events = getevents_request.json()['events']['event'] #map of concerts
+    concerts_info={}
+    for event in events:
+        artists = event['artists']['artist'] #This can be a list of artists.
+        if isinstance(artists,list):
+            for artist in artists:
+                print(artist)
+                if not artist in concerts_info:
+                    concerts_info[artist]=[]
+                # Date is listed as date then time
+                event_date=event['startDate'][:-9] #slice the date
+                event_time=event['startDate'][-8:-3] #slice the time, minus seconds.
+                concert_info={'artist': artist, 'venue': event['venue']['name'],
+                              'date': event_date, 'time': event_time}
+                concerts_info[artist].append(concert_info)
+        else:
+            artist = artists # this is a solo act
+            print('solo:, ',artist)
+            if not artist in concerts_info:
+                concerts_info[artist]=[]
+            # Date is listed as date then time
+            event_date=event['startDate'][:-9] #slice the date
+            event_time=event['startDate'][-8:-3] #slice the time, minus seconds.
+            concert_info={'artist': artist, 'venue': event['venue']['name'],
+                          'date': event_date, 'time': event_time}
+            concerts_info[artist].append(concert_info)  
+    return concerts_info
+                
+        
 
 def get_rdio_artists(username):
     """Get all the artists in username's Rdio collection"""
@@ -64,7 +105,7 @@ def org_concert_info(my_concerts):
     concerts_info={}
     # Create the regex pattern for the concert info
     info_regex=re.compile('(?P<venue>[^,]*).*?(?P<date>[0-9]{1,2}/[0-9]{1,2}(-[0-9]{1,2})?),'
-                        '(?P<time>[^,]+)')
+                        '(?P<time>[^,.]+)')
     for artist, info_strings in my_concerts.items():
         concerts_info[artist]=[] # Some artists may have multiple upcoming shows
         for info_string in info_strings:
@@ -83,6 +124,7 @@ def concerts_by_date(concerts_info):
     this_year = date.today().year
     # Create a flat list of the individual concert info dictionaries
     concert_list = [concert for artist in concerts_info for concert in concerts_info[artist]]
+    
     date_regex=re.compile('(?P<month>[^/]{1,2})/(?P<date>[0-9]{1,2})')
     for concert in concert_list:
         m = date_regex.search(concert['date'])
@@ -92,8 +134,15 @@ def concerts_by_date(concerts_info):
         concert['pydate'] = date(year,month,day)
     concert_list_sorted=sorted(concert_list,key=itemgetter('pydate'))
     return concert_list_sorted
-    
 
+def last_concerts_by_date(concerts_info):   
+    """Sadly, Last.fm dates are in a different format than EW. Probably better."""
+    concert_list = [concert for artist in concerts_info for concert in concerts_info[artist]]
+    for concert in concert_list:
+        concert['pydate'] = datetime.strptime(concert['date'],'%a, %d %b %Y')
+    concert_list_sorted=sorted(concert_list,key=itemgetter('pydate'))
+    print(concert_list_sorted)
+    return concert_list_sorted
 
             
 def format_concerts(my_concerts):
@@ -125,4 +174,19 @@ def get_rdio_ewconcerts(username):
     my_concerts_list = concerts_by_date(my_concerts_dict)
     # String it up
     return format_concerts(my_concerts_list)
+
+def get_rdio_lastfm_concerts(username,city):
+    """Find all last.fm-listed concerts by username's Rdio collection artists."""
+    # Pick up the Rdio artists and all the EW concerts
+    artists = get_rdio_artists(username)
+    last_artists = get_lastfm_concerts(city)
+    # Just want concerts from Rdio artists   
+    my_concert_artists = artists.intersection(last_artists) 
+    my_concerts={artist:last_artists[artist] for artist in my_concert_artists}
+    #my_concerts = last_artists
+    # Reorganize my_concerts so I can pick out the dates
+    my_concerts_list = last_concerts_by_date(my_concerts)
+    # String it up
+    return format_concerts(my_concerts_list)
+    
 

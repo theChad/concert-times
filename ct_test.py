@@ -26,7 +26,8 @@ if __name__ == '__main__':
     #    print(concerts['artist'],concerts['venue'],concerts['date'])
     #print(format_concerts(my_concerts_list))
     print('I shouldn\'t be running')
-    print(get_rdio_ewconcerts('the_chad'))
+    #print(get_rdio_ewconcerts('the_chad'))
+    print(get_rdio_lastfm_concerts('the_chad','chicago'))
     """
     # Pick up the Rdio artists and all the EW concerts
     artists = {'Dessa','Arctic Monkey','Nine Inch Nails','Justin Timberlake'}
