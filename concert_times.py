@@ -176,6 +176,7 @@ def get_rdio_ewconcerts(username):
     return format_concerts(my_concerts_list)
 
 def get_rdio_lastfm_concerts(username,city):
+    print('got here with user ',username,'in ', city,'.')
     """Find all last.fm-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
     artists = get_rdio_artists(username)
