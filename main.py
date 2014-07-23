@@ -10,9 +10,9 @@ from concert_times import *
 
 # Call the get_rdio_ewconcerts function based on the URL
 app = Flask(__name__)
-@app.route('/user/<username>/city/<city>')
-def get_username(username,city):
-    return get_rdio_lastfm_concerts(username,city)
+@app.route('/<username>')
+def get_username(username):
+    return get_rdio_ewconcerts(username)
 @app.route('/')
 def hello():
     return get_rdio_lastfm_concerts(request.args.get("user"), request.args.get("city"))
