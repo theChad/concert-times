@@ -15,4 +15,4 @@ def get_username(username,city):
     return get_rdio_lastfm_concerts(username,city)
 @app.route('/')
 def hello():
-    return request.args.get("user")
+    return get_rdio_lastfm_concerts(request.args.get("user"), request.args.get("city"))
