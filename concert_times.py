@@ -180,12 +180,16 @@ def get_rdio_lastfm_concerts(username,city):
     """Find all last.fm-listed concerts by username's Rdio collection artists."""
     # Pick up the Rdio artists and all the EW concerts
     artists = get_rdio_artists(username)
+    print("1")
     last_artists = get_lastfm_concerts(city)
     # Just want concerts from Rdio artists   
+    print("2")
     my_concert_artists = artists.intersection(last_artists) 
+    print("3")
     my_concerts={artist:last_artists[artist] for artist in my_concert_artists}
     #my_concerts = last_artists
     # Reorganize my_concerts so I can pick out the dates
+    print("4")
     my_concerts_list = last_concerts_by_date(my_concerts)
     # String it up
     return format_concerts(my_concerts_list)
